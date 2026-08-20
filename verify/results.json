@@ -1,0 +1,152 @@
+{
+  "theme": {
+    "bodyBg": "rgb(246, 241, 229)",
+    "bodyFont": "\"EB Garamond\", Georgia, \"Times New Roman\", serif",
+    "titleSel": "slide-main-title",
+    "titleFont": "\"EB Garamond\", Georgia, \"Times New Roman\", serif",
+    "monoSel": "chip-ticker",
+    "monoFont": "\"EB Garamond\", Georgia, \"Times New Roman\", serif",
+    "headerBg": "rgb(246, 241, 229)",
+    "footerBg": "rgb(246, 241, 229)",
+    "cardBg": "rgba(0, 0, 0, 0)"
+  },
+  "canvasPixels": [
+    {
+      "w": 956,
+      "h": 522,
+      "px": [
+        [
+          251,
+          248,
+          239,
+          255
+        ],
+        [
+          251,
+          248,
+          239,
+          255
+        ],
+        [
+          251,
+          248,
+          239,
+          255
+        ],
+        [
+          251,
+          248,
+          239,
+          255
+        ],
+        [
+          180,
+          182,
+          183,
+          255
+        ]
+      ]
+    }
+  ],
+  "navNumbers": [
+    {
+      "pressed": 1,
+      "shows": "01"
+    },
+    {
+      "pressed": 2,
+      "shows": "02"
+    },
+    {
+      "pressed": 3,
+      "shows": "03"
+    },
+    {
+      "pressed": 4,
+      "shows": "04"
+    },
+    {
+      "pressed": 5,
+      "shows": "05"
+    },
+    {
+      "pressed": 6,
+      "shows": "06"
+    },
+    {
+      "pressed": 7,
+      "shows": "07"
+    },
+    {
+      "pressed": 8,
+      "shows": "08"
+    }
+  ],
+  "afterArrowsFwd": "08",
+  "afterArrowsBack": "01",
+  "gridOpen": true,
+  "gridClosed": true,
+  "notesOpen": false,
+  "paletteOpen": true,
+  "paletteResults": [
+    "Chart symbol → LIT\n          Lighter (LIT/USD)",
+    "Slide 7 — Crypto Leadership Gauge: LIT vs BTC\n          [LIT / BTC]",
+    "Slide 6 — The Post-TGE Base Breakout\n          [LIT]",
+    "Slide 4 — High-Beta AI Plumbing: Momentum Ignition\n          [CRDO]",
+    "Slide 1 — The Weight of the Evidence\n          macro"
+  ],
+  "afterPaletteSlide": {
+    "num": "02",
+    "hash": "#2/LIT"
+  },
+  "chipSwitch": {
+    "clicked": "MEDP",
+    "hash": "#2/MEDP"
+  },
+  "tools": [
+    "hline",
+    "trend",
+    "measure"
+  ],
+  "indicatorToggles": {
+    "count": 6,
+    "before": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "mid": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "after": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "autoplay": {
+    "ringExists": true,
+    "ringVisible": true,
+    "dasharray": "103.673",
+    "btnClass": "deck-nav-btn next autoplaying"
+  },
+  "exportDownload": {
+    "suggested": "fn-the-quiet-compounder-shelf-breakout-woe.png"
+  },
+  "consoleErrors": [],
+  "consoleWarnings": [
+    "Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently"
+  ],
+  "pageErrors": []
+}
