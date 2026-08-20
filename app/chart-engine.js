@@ -192,6 +192,25 @@ class TechnicalChartEngine {
     };
     this.canvas.addEventListener("mousedown", B.mousedown);
 
+    const touchPoint = (e) => {
+      const t = (e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]);
+      return t ? { clientX: t.clientX, clientY: t.clientY, button: 0, shiftKey: false } : e;
+    };
+    B.touchstart = (e) => {
+      if (e.touches.length !== 1) return;
+      B.mousedown(touchPoint(e));
+    };
+    B.touchmove = (e) => {
+      if (!this._panDrag && !this._measuring && !this._zoomSel && !this._dragDrawing) return;
+      e.preventDefault();
+      B.mousemove(touchPoint(e));
+    };
+    B.touchend = () => { B.mouseup(); };
+    this.canvas.addEventListener("touchstart", B.touchstart, { passive: true });
+    this.canvas.addEventListener("touchmove", B.touchmove, { passive: false });
+    this.canvas.addEventListener("touchend", B.touchend);
+    this.canvas.addEventListener("touchcancel", B.touchend);
+
     B.click = (e) => {
       if (!this._layout) return;
       if (this.tool !== "hline" && this.tool !== "trend") return;
@@ -303,6 +322,10 @@ class TechnicalChartEngine {
       this.canvas.removeEventListener("click", this._bound.click);
       this.canvas.removeEventListener("wheel", this._bound.wheel);
       this.canvas.removeEventListener("dblclick", this._bound.dblclick);
+      this.canvas.removeEventListener("touchstart", this._bound.touchstart);
+      this.canvas.removeEventListener("touchmove", this._bound.touchmove);
+      this.canvas.removeEventListener("touchend", this._bound.touchend);
+      this.canvas.removeEventListener("touchcancel", this._bound.touchend);
     }
     window.removeEventListener("mouseup", this._bound.mouseup);
     window.removeEventListener("keydown", this._bound.keydown);

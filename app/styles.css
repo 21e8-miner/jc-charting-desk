@@ -54,18 +54,27 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+  height: 100dvh;
+}
+
 body.deck-body {
   background-color: var(--bg-page);
   color: var(--ink);
   font-family: var(--font-serif);
   font-size: 16px;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  width: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   user-select: none;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rgba(35, 64, 95, 0.12);
+  overscroll-behavior: none;
 }
 
 /* Small-caps letterspaced label utility (screenshot's column labels) */
@@ -527,6 +536,7 @@ canvas.chart-canvas {
   width: 100%;
   height: 100%;
   display: block;
+  touch-action: none;
 }
 
 .chart-crosshair-tooltip {
@@ -1707,24 +1717,198 @@ body.presenter-mode .presenter-notes-panel { width: 320px; }
 /* ==========================================================================
    Responsive / print / reduced motion
    ========================================================================== */
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .slide-content-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: none;
-    overflow-y: auto;
+    grid-template-rows: auto;
+    overflow: visible;
+    gap: 18px;
+  }
+  .chart-container-card {
+    min-height: 340px;
+  }
+  .chart-viewport-box {
+    min-height: 260px;
+    height: min(46vh, 420px);
+    flex: 0 0 auto;
   }
   .strategy-sidebar-card {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
     overflow-y: visible;
   }
   .macro-dashboard-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
   .confluence-strip {
     grid-template-columns: 1fr;
+    gap: 8px;
   }
   .footer-shortcuts-hint, .jc-quote-banner { display: none; }
+}
+
+@media (max-width: 820px) {
+  .deck-header {
+    height: auto;
+    min-height: 48px;
+    padding: 8px max(10px, env(safe-area-inset-right)) 8px max(10px, env(safe-area-inset-left));
+    padding-top: max(8px, env(safe-area-inset-top));
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .brand-subtitle,
+  .slide-title-chip,
+  .nav-action-btn span,
+  #btn-presenter {
+    display: none;
+  }
+  .header-center {
+    order: 3;
+    width: 100%;
+  }
+  .header-center .slide-indicator-pill {
+    width: 100%;
+    justify-content: center;
+    padding: 4px 10px;
+  }
+  .nav-action-btn {
+    min-width: 40px;
+    min-height: 40px;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .deck-footer {
+    height: auto;
+    min-height: 56px;
+    padding: 8px max(10px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+    gap: 8px;
+  }
+  .footer-left .session-clock,
+  .footer-left .deck-eta {
+    display: none;
+  }
+  .macro-badge span:not(.status-dot) {
+    font-size: 10px;
+  }
+  .footer-nav-controls {
+    margin-left: auto;
+  }
+  .deck-nav-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .dot-btn {
+    width: 10px;
+    height: 10px;
+  }
+  .dot-btn.active { width: 22px; }
+
+  .slide-card {
+    padding: 14px max(14px, env(safe-area-inset-right)) 18px max(14px, env(safe-area-inset-left));
+    -webkit-overflow-scrolling: touch;
+  }
+  .slide-top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .slide-quick-metrics {
+    border-left: none;
+    border-top: 1px solid var(--hairline);
+    padding: 10px 0 0;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .slide-main-title { font-size: 22px; }
+  .slide-subtitle-text { font-size: 13.5px; }
+
+  .macro-dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .chart-viewport-box {
+    min-height: 220px;
+    height: min(42vh, 340px);
+  }
+  .chart-toolbar {
+    gap: 6px;
+  }
+  .chart-left-controls {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+  .chart-left-controls > * + * {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+  }
+  .tool-btn,
+  .chart-pill-btn,
+  .indicator-toggle {
+    min-height: 36px;
+    padding: 6px 10px;
+  }
+  .symbol-chip {
+    min-height: 40px;
+    padding: 6px 10px;
+  }
+
+  .presenter-notes-panel {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: min(72dvh, 560px);
+    transform: translateY(100%);
+    border-left: none;
+    border-top: 3px double var(--ink);
+    border-radius: 12px 12px 0 0;
+  }
+  .presenter-notes-panel.open { transform: translateY(0); }
+  .presentation-wrapper:has(.presenter-notes-panel.open) .slides-viewport,
+  body.presenter-mode .presentation-wrapper:has(.presenter-notes-panel.open) .slides-viewport {
+    margin-right: 0;
+  }
+
+  .grid-modal-content {
+    width: 100%;
+    max-width: none;
+    max-height: 100dvh;
+    height: 100%;
+    border-radius: 0;
+    padding: max(16px, env(safe-area-inset-top)) 14px max(16px, env(safe-area-inset-bottom));
+  }
+  .grid-cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .help-card,
+  .cmd-card {
+    width: calc(100% - 20px);
+    max-width: none;
+    margin: env(safe-area-inset-top) 10px env(safe-area-inset-bottom);
+  }
+  .cmd-input { font-size: 16px; }
+
+  .jc-strategy-table { min-width: 920px; }
+  .table-slide-wrapper {
+    margin: 0 -4px;
+    padding-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-title { font-size: 12px; }
+  .brand-mark { font-size: 12px; padding: 6px 7px; }
+  .slide-main-title { font-size: 20px; }
+  .chart-viewport-box {
+    min-height: 200px;
+    height: min(38vh, 280px);
+  }
+  .header-right { gap: 4px; }
+  .nav-action-btn { min-width: 38px; min-height: 38px; padding: 6px; }
 }
 
 @media print {

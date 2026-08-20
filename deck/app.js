@@ -1118,16 +1118,29 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   let touchX = null;
+  let touchY = null;
+  const swipeIgnore = 'canvas, .symbol-strip, .chart-toolbar, .table-slide-wrapper, .cmd-input, button, a, input, .presenter-notes-panel';
   viewportEl.addEventListener('touchstart', (e) => {
+    const t = e.target;
+    if (t.closest && t.closest(swipeIgnore)) {
+      touchX = null;
+      touchY = null;
+      return;
+    }
     touchX = e.changedTouches[0].clientX;
+    touchY = e.changedTouches[0].clientY;
   }, { passive: true });
   viewportEl.addEventListener('touchend', (e) => {
     if (touchX == null) return;
     const dx = e.changedTouches[0].clientX - touchX;
-    if (dx < -60) goToSlide(currentSlideIndex + 1);
-    if (dx > 60) goToSlide(currentSlideIndex - 1);
+    const dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dx) > 56 && Math.abs(dx) > Math.abs(dy) * 1.35) {
+      if (dx < 0) goToSlide(currentSlideIndex + 1);
+      else goToSlide(currentSlideIndex - 1);
+    }
     touchX = null;
-  });
+    touchY = null;
+  }, { passive: true });
 
   setInterval(() => {
     const elapsed = Math.floor((Date.now() - sessionStart) / 1000);

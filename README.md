@@ -36,6 +36,16 @@ python3 -m http.server 8080
 
 The repo root `index.html` redirects to `app/` so GitHub Pages has a clean URL.
 
+## Mobile
+
+The live demo is a phone/tablet layout as well as a desk:
+
+- Header and footer compact; 44px prev/next targets
+- Chart above the playbook sidebar, both scroll inside the slide
+- Swipe the **slide** (not the canvas) to change pages; drag the chart to pan
+- Notes open as a bottom sheet; the execution matrix still scrolls sideways
+- Safe-area padding for notched phones
+
 ## Keyboard
 
 | Key | Action |
