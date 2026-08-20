@@ -1,6 +1,6 @@
 /**
- * JC Parets Style Technical Presentation Deck Data
- * Stock Market Media / TrendLabs Strategy Deck
+ * Weight of the Evidence — presentation data.
+ * Charting approach inspired by JC Parets / All Star Charts (not affiliated).
  *
  * v2 content: lesser-known equities (FN, MEDP, CRDO, MUSA),
  * Lighter crypto (LIT) + LIT/BTC relative-strength gauge.
@@ -179,8 +179,8 @@ const PRESENTATION_DATA = {
         }
       ],
       jcNotes: `
-        <h5>JC's Opening Monologue:</h5>
-        <blockquote>"Look, everybody wants to have an opinion on the Fed, the election, or inflation. You know what I care about? The Weight of the Evidence. Price is the only thing that pays."</blockquote>
+        <h5>Opening notes</h5>
+        <blockquote>"Everybody wants an opinion on the Fed, the election, or inflation. The weight of the evidence is what pays — and price is the only thing that pays."</blockquote>
         <p>When you look across thousands of charts every week, the message is loud and clear: breadth is expanding, credit spreads are tight, and leadership is coming from places most people aren't even watching.</p>
         <p><strong>Our approach tonight:</strong> No mega-cap darlings. We go through four under-the-radar equity setups — Fabrinet, Medpace, Credo, Murphy USA — plus one crypto breakout in Lighter's LIT token. Every one of them with a well-defined risk level and asymmetric upside Fibonacci targets.</p>
       `
@@ -227,8 +227,8 @@ const PRESENTATION_DATA = {
       ],
       riskLevel: 245,
       jcNotes: `
-        <h5>JC's Charting Breakdown on FN:</h5>
-        <blockquote>"This is the kind of chart I dream about. Fabrinet does precision optical manufacturing for the datacom and telecom world — and while everyone argues about the AI darlings, FN just quietly built a ten-week shelf and broke out."</blockquote>
+        <h5>FN — setup notes</h5>
+        <blockquote>"Fabrinet does precision optical manufacturing for datacom and telecom. While the tape argues about AI darlings, FN quietly built a ten-week shelf and broke out. That's the chart."</blockquote>
         <p><strong>The Trade Playbook:</strong></p>
         <ul>
           <li><strong>The Rule:</strong> Above $245, the path of least resistance is higher toward $315, then $380.</li>
@@ -278,7 +278,7 @@ const PRESENTATION_DATA = {
       ],
       riskLevel: 320,
       jcNotes: `
-        <h5>JC's Charting Breakdown on MEDP:</h5>
+        <h5>MEDP — setup notes</h5>
         <blockquote>"Medpace got cut by a third and everyone declared the story dead. But look at what the chart actually did — it stopped going down, built a five-month rounding base right on the rising 200-day, and just poked its head through the neckline."</blockquote>
         <p><strong>The Execution:</strong></p>
         <ul>
@@ -329,7 +329,7 @@ const PRESENTATION_DATA = {
       ],
       riskLevel: 54,
       jcNotes: `
-        <h5>JC's Charting Breakdown on CRDO:</h5>
+        <h5>CRDO — setup notes</h5>
         <blockquote>"Everyone knows the GPU names. Almost nobody can tell you who makes the cables and connectivity silicon that actually link those GPUs together. That's Credo — and the chart is coiled like a spring."</blockquote>
         <p><strong>The Trade Playbook:</strong></p>
         <ul>
@@ -380,7 +380,7 @@ const PRESENTATION_DATA = {
       ],
       riskLevel: 465,
       jcNotes: `
-        <h5>JC's Charting Breakdown on MUSA:</h5>
+        <h5>MUSA — setup notes</h5>
         <blockquote>"Murphy USA sells gasoline and snacks. It will never trend on social media. And yet it quietly made all-time highs while the broad market went nowhere for months. You know who was buying? Institutions. That's who."</blockquote>
         <p><strong>The Execution:</strong></p>
         <ul>
@@ -431,8 +431,8 @@ const PRESENTATION_DATA = {
       ],
       riskLevel: 2.85,
       jcNotes: `
-        <h5>JC's Charting Breakdown on LIT:</h5>
-        <blockquote>"Lighter built one of the best zero-knowledge rollup perp DEXes in crypto — serious volume, serious throughput. But I don't trade the tech, I trade the chart. And this chart just broke out of its entire post-TGE base."</blockquote>
+        <h5>LIT — setup notes</h5>
+        <blockquote>"Lighter built a serious zero-knowledge rollup perp DEX — volume and throughput to match. The playbook still trades the chart, not the tech. This one just broke out of its entire post-TGE base."</blockquote>
         <p><strong>The Crypto Caveats:</strong></p>
         <ul>
           <li><strong>Wider Levels:</strong> Crypto volatility demands wider risk levels. Our line in the sand is $2.85 — roughly 17% below spot — and that is a <em>tight</em> stop in this asset class.</li>
@@ -483,8 +483,8 @@ const PRESENTATION_DATA = {
       ],
       riskLevel: 2.95,
       jcNotes: `
-        <h5>JC's Relative Strength Macro Note:</h5>
-        <blockquote>"Everybody asks me: 'Is it altseason?' Wrong question. The right question is: 'Is this specific alt outperforming Bitcoin?' For Lighter, the answer on the chart is an emphatic yes."</blockquote>
+        <h5>LIT/BTC — relative strength</h5>
+        <blockquote>"'Is it altseason?' is the wrong question. The right one is whether this alt is outperforming Bitcoin. For Lighter, the ratio says yes."</blockquote>
         <p>This ratio is our compass for crypto risk. As long as LIT outperforms BTC, holding the token is justified on relative grounds alone. If the ratio loses 2.95 (×10⁵), the leadership thesis is wrong and we rotate back to BTC. Simple, mechanical, unemotional.</p>
       `
     },
@@ -493,7 +493,7 @@ const PRESENTATION_DATA = {
     {
       id: "trade-matrix-table",
       type: "table",
-      title: "JC's Technical Execution Matrix",
+      title: "Technical Execution Matrix",
       subtitle: "The Master Cheat Sheet: Defined Risk, Fibonacci Targets & Asymmetric R/R",
       setupPill: "Actionable Trade Summary",
       pillClass: "bullish",
@@ -585,8 +585,8 @@ const PRESENTATION_DATA = {
         }
       ],
       jcNotes: `
-        <h5>JC's Final Execution Rules:</h5>
-        <blockquote>"Remember the golden rule of trading: It is not about being right or wrong. It is about how much you make when you are right, and how little you lose when you are wrong."</blockquote>
+        <h5>Execution rules</h5>
+        <blockquote>"It is not about being right or wrong. It is about how much you make when you are right, and how little you lose when you are wrong."</blockquote>
         <ol>
           <li><strong>Respect the Line in the Sand:</strong> If any position falls below its risk level, sell it. No hoping, no rationalizing.</li>
           <li><strong>Size To The Asset Class:</strong> Equities get standard weight; high-beta names like CRDO and crypto like LIT get half weight because their lines in the sand are wider.</li>

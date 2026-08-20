@@ -1,6 +1,8 @@
-# Weight of the Evidence — JC Charting Desk
+# Weight of the Evidence — Charting Desk
 
 Editorial cream-theme presentation deck for **defined-risk technical setups**: lesser-known equities plus Lighter (LIT), with an interactive charting engine. Vanilla HTML/CSS/JS. No build step. Symbol series are **deterministic and offline** — never a live feed.
+
+Charting language (weight of the evidence, line in the sand, Fibonacci targets) is **inspired by JC Parets / All Star Charts**. Not affiliated, not a JC product.
 
 ## Share this project
 
@@ -54,7 +56,7 @@ The live demo is a phone/tablet layout as well as a desk:
 | `1`–`8` | Jump to slide |
 | `⌘K` / `Ctrl+K` | Command palette |
 | `A` | Autoplay |
-| `N` | JC presenter notes |
+| `N` | Presenter notes |
 | `G` | Slide grid |
 | `P` | Presenter chrome |
 | `F` | Fullscreen |

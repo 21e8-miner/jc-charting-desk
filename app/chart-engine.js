@@ -1,5 +1,5 @@
 /**
- * Interactive technical chart engine — JC / All Star Charts style.
+ * Interactive technical chart engine — weight-of-the-evidence / All Star Charts–inspired.
  *
  * Features:
  *  - Candle / line / RS-ratio chart types, SMA 50/200, Fib levels, R/R zones,

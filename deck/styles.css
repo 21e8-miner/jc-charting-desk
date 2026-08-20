@@ -592,7 +592,7 @@ canvas.chart-canvas {
 .chart-crosshair-tooltip .tt-flag.bad { color: var(--brick); }
 
 /* ==========================================================================
-   Side Strategy Sidebar (JC Playbook & Trade Specs)
+   Side strategy sidebar (playbook & trade specs)
    ========================================================================== */
 .strategy-sidebar-card {
   display: flex;

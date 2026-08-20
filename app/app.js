@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cmdResults = document.getElementById('cmd-results');
   const autoplayRingFg = document.getElementById('autoplay-ring-fg');
 
-  const JC_QUOTES = [
+  const DESK_QUOTES = [
     "Risk management is #1. If we're above our risk level, we're buyers. Below it, there's no reason to be involved.",
     "Price is the only thing that pays. The weight of the evidence is all that matters.",
     "All-time highs are a bullish characteristic. Leaders make higher highs.",
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <div class="jc-rule-box" style="margin-top: 20px;">
-        <div class="jc-rule-badge">JC'S PRIMARY MARKET TENET</div>
+        <div class="jc-rule-badge">PRIMARY MARKET TENET</div>
         <div class="jc-rule-quote">"If you're trying to figure out what the Fed will do next, you've already lost. Focus on price, trend, and relative strength. The weight of the evidence is overwhelmingly bullish."</div>
       </div>
     `;
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <div class="trade-levels-card">
             <div class="trade-levels-title">
-              <span>JC's Trade Playbook</span>
+              <span>Trade playbook</span>
               <span>RISK / REWARD</span>
             </div>
             ${slide.tradeLevels.map(lvl => `
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <th>Fib Target 1 (161.8%)</th>
               <th>Fib Target 2 (261.8%)</th>
               <th>R / R</th>
-              <th>JC's Actionable Verdict</th>
+              <th>Verdict</th>
             </tr>
           </thead>
           <tbody>
@@ -1150,8 +1150,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 1000);
 
   setInterval(() => {
-    quoteIdx = (quoteIdx + 1) % JC_QUOTES.length;
-    if (quoteEl) quoteEl.textContent = `"${JC_QUOTES[quoteIdx]}"`;
+    quoteIdx = (quoteIdx + 1) % DESK_QUOTES.length;
+    if (quoteEl) quoteEl.textContent = `"${DESK_QUOTES[quoteIdx]}"`;
   }, 9000);
 
   /* ========================================================================
