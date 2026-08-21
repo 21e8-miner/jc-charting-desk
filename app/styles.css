@@ -504,7 +504,7 @@ body.deck-body {
 .indicator-toggle.sma-200.active { color: var(--gold); background: rgba(176, 138, 62, 0.08); }
 .indicator-toggle.sma-50.active { color: var(--navy); background: var(--tint-blue); }
 .indicator-toggle.fib.active { color: var(--green); background: var(--tint-green); }
-.indicator-toggle.rsi.active { color: var(--plum); background: rgba(125, 90, 120, 0.08); }
+
 .indicator-toggle.vol.active { color: var(--ink-secondary); background: rgba(91, 100, 114, 0.08); }
 .indicator-toggle.rr.active { color: var(--brick); background: var(--tint-red); }
 
@@ -578,7 +578,7 @@ canvas.chart-canvas {
 .chart-crosshair-tooltip .tt-row.dn { color: var(--brick); }
 .chart-crosshair-tooltip .tt-row.sma50 { color: var(--navy); }
 .chart-crosshair-tooltip .tt-row.sma200 { color: var(--gold); }
-.chart-crosshair-tooltip .tt-row.rsi { color: var(--plum); }
+
 .chart-crosshair-tooltip .tt-flag {
   margin-top: 6px;
   padding-top: 5px;

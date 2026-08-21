@@ -215,7 +215,7 @@ const PRESENTATION_DATA = {
       evidence: [
         "<strong>Shelf Resolution:</strong> Textbook 10-week flat shelf between $245–$255 resolving to the upside on expanding volume.",
         "<strong>Moving Average Stack:</strong> Price > rising 50-day SMA ($260) > rising 200-day SMA ($235) — a perfectly ordered bullish trend.",
-        "<strong>RSI Profile:</strong> Holding the 55–70 bullish regime through the entire consolidation — no bearish divergence anywhere.",
+        "<strong>Momentum Profile:</strong> Constructive bullish regime through the entire consolidation — no bearish divergence anywhere.",
         "<strong>Execution:</strong> We are long above $245, targeting $315 and $380. Below $245, the setup simply doesn't exist."
       ],
       chartData: generateTechnicalSeries(218, 0.16, 2.4, 220, 168, 26240, 262.4),
@@ -266,7 +266,7 @@ const PRESENTATION_DATA = {
       evidence: [
         "<strong>Selling Exhaustion:</strong> Five-month rounding base carved out directly on top of the rising 200-day SMA after a 30% correction.",
         "<strong>Neckline Reclaim:</strong> Price has pushed back through the $342 neckline on the strongest weekly volume since the correction began.",
-        "<strong>RSI Reset & Reacceleration:</strong> Momentum washed out to the 40 zone — classic bull-market reset — and is now pressing back above 60.",
+        "<strong>Momentum Reset:</strong> Selling washed out at the rising 200-day — classic bull-market reset — and price is now reaccelerating through the neckline.",
         "<strong>Execution:</strong> We are buyers above $320 with targets at $420 and $505. Below $320 the base failed and we're out."
       ],
       chartData: generateTechnicalSeries(308, 0.11, 4.2, 220, 170, 34863, 348.6),
@@ -602,7 +602,7 @@ const PRESENTATION_DATA = {
    SYMBOL_LIBRARY — deterministic, seeded, fully offline symbol data.
    Map of ticker -> lazily generated series ({ ticker, name, data }).
    Series are produced by generateTechnicalSeries (mulberry32-seeded,
-   pinned closes) with SMA50/SMA200/RSI/RS-ratio attached via
+   pinned closes) with SMA50/SMA200/RS-ratio attached via
    attachIndicators. Generation happens on first access and is cached,
    so first paint stays fast. No fetch/XHR — data is always available.
    Crypto symbols (LIT/BTC/ETH/SOL) carry crypto-appropriate volatility.

@@ -282,9 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <button class="indicator-toggle fib active" data-toggle="showFib" data-slide="${idx}">
                 <span class="indicator-dot"></span> Fib Targets
               </button>
-              <button class="indicator-toggle rsi active" data-toggle="showRSI" data-slide="${idx}">
-                <span class="indicator-dot"></span> RSI (14)
-              </button>
               <button class="indicator-toggle vol active" data-toggle="showVolume" data-slide="${idx}">
                 <span class="indicator-dot"></span> Volume
               </button>
@@ -666,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
           showSMA200: true,
           showSMA50: true,
           showFib: true,
-          showRSI: true,
+          showRSI: false,
           showVolume: true,
           showRR: true,
           symbol
@@ -863,7 +860,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ['showSMA50', 'Toggle 50 SMA'],
       ['showSMA200', 'Toggle 200 SMA'],
       ['showFib', 'Toggle Fib targets'],
-      ['showRSI', 'Toggle RSI pane'],
       ['showVolume', 'Toggle volume pane'],
       ['showRR', 'Toggle risk/reward zones']
     ].forEach(([key, label]) => {

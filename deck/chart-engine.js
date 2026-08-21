@@ -3,7 +3,10 @@
  *
  * Features:
  *  - Candle / line / RS-ratio chart types, SMA 50/200, Fib levels, R/R zones,
- *    volume + RSI panes, last-price tag, crosshair tooltip.
+ *    volume pane, last-price tag, crosshair tooltip.
+ *  - Middle-out y-scale: fit visible price action (OHLC + SMAs + nearby
+ *    structure). Distant Fibonacci extensions become off-scale rails
+ *    instead of compressing the tape.
  *  - Wheel zoom (anchored), drag pan, double-click reset.
  *  - Drawing tools: horizontal line + trendline (click-click placement with
  *    magnet snap to O/H/L/C), drag to move, double-click to delete, clear.
@@ -33,7 +36,7 @@ class TechnicalChartEngine {
       showSMA200: true,
       showSMA50: true,
       showFib: true,
-      showRSI: true,
+      showRSI: false,
       showVolume: true,
       showRR: true,
       chartType: "candle",
@@ -582,19 +585,16 @@ class TechnicalChartEngine {
 
     const opts = this.options;
     const isRS = opts.chartType === "rs";
-    const showRSI = opts.showRSI;
     const showVol = opts.showVolume && !isRS;
-    const rsiH = showRSI ? Math.max(56, h * 0.16) : 0;
-    const volH = showVol ? Math.max(42, h * 0.12) : 0;
+    const volH = showVol ? Math.max(36, h * 0.10) : 0;
     const axisH = 22;
     const padL = 16;
     const padR = 78;
     const chartWidth = w - padR - padL;
     const mainTop = 10;
-    const mainHeight = h - rsiH - volH - axisH - mainTop - (showRSI || showVol ? 10 : 0);
+    const mainHeight = h - volH - axisH - mainTop - (showVol ? 8 : 0);
     const mainBottom = mainTop + mainHeight;
     const volTop = mainBottom + 6;
-    const rsiTop = volTop + volH + (showVol ? 6 : 0);
 
     // Single pass over the visible window for min/max (+ max volume).
     let minPrice = Infinity;
@@ -637,18 +637,38 @@ class TechnicalChartEngine {
         }
       }
     }
+    // Middle-out scale: only nearby structure joins the window. Distant
+    // fib extensions (161.8 / 261.8) used to expand max by ~1.45× and
+    // crush candles into a thin strip — they become off-scale rails.
+    const actionMin = minPrice;
+    const actionMax = maxPrice;
+    const actionRange = (actionMax - actionMin) || 1;
+    const nearPad = actionRange * 0.22;
+    const offHigh = [];
+    const offLow = [];
+    if (!isRS && opts.riskLevel != null) {
+      if (opts.riskLevel >= actionMin - nearPad && opts.riskLevel <= actionMax + nearPad) {
+        if (opts.riskLevel < minPrice) minPrice = opts.riskLevel;
+        if (opts.riskLevel > maxPrice) maxPrice = opts.riskLevel;
+      }
+    }
     if (opts.showFib && opts.fibLevels && !isRS) {
       for (let k = 0; k < opts.fibLevels.length; k++) {
         const f = opts.fibLevels[k];
-        if (f.price >= minPrice * 0.7 && f.price <= maxPrice * 1.45) {
+        if (f.price == null) continue;
+        if (f.price >= actionMin - nearPad && f.price <= actionMax + nearPad) {
           if (f.price < minPrice) minPrice = f.price;
           if (f.price > maxPrice) maxPrice = f.price;
+        } else if (f.price > actionMax) {
+          offHigh.push(f);
+        } else {
+          offLow.push(f);
         }
       }
     }
     const range = (maxPrice - minPrice) || 1;
-    minPrice -= range * 0.06;
-    maxPrice += range * 0.1;
+    minPrice -= range * 0.08;
+    maxPrice += range * 0.12;
 
     const spanY = maxPrice - minPrice;
     const innerH = mainHeight - 8;
@@ -656,7 +676,7 @@ class TechnicalChartEngine {
     const getX = (rel) => padL + (rel / (visN - 1)) * chartWidth;
     this._layout = {
       padL, padR, chartWidth, mainTop, mainBottom, mainHeight, innerH,
-      minPrice, maxPrice, rsiTop, volTop, volH, rsiH, axisH, visN, i0, i1
+      minPrice, maxPrice, volTop, volH, axisH, visN, i0, i1
     };
 
     // ---- background + horizontal grid ----
@@ -668,6 +688,7 @@ class TechnicalChartEngine {
     const gridSteps = 6;
     ctx.font = "10px \"IBM Plex Mono\", monospace";
     ctx.textAlign = "left";
+    const lastCloseY = getY(isRS ? this.data[i1 - 1].rsRatio : this.data[i1 - 1].close);
     for (let i = 0; i <= gridSteps; i++) {
       const p = minPrice + (i / gridSteps) * spanY;
       const y = getY(p);
@@ -675,16 +696,19 @@ class TechnicalChartEngine {
       ctx.moveTo(padL, y);
       ctx.lineTo(w - padR, y);
       ctx.stroke();
+      if (Math.abs(y - lastCloseY) < 12) continue; // last-price tag owns that tick
       ctx.fillStyle = "#5b6472";
       ctx.fillText(this.fmt(p).replace("$", ""), w - padR + 8, y + 3);
     }
 
-    // ---- R/R zones ----
+    const lastD0 = this.data[i1 - 1];
+    const lastY0 = getY(isRS ? lastD0.rsRatio : lastD0.close);
+
+    // ---- R/R zones (clamp off-scale targets to the pane edge) ----
     if (opts.showRR && opts.riskLevel != null && opts.targetPrice != null && !isRS) {
-      const lastD = this.data[i1 - 1];
-      const lastY = getY(lastD.close);
+      const lastY = lastY0;
       const riskY = getY(opts.riskLevel);
-      const tgtY = getY(opts.targetPrice);
+      const tgtY = Math.max(mainTop, Math.min(mainBottom, getY(opts.targetPrice)));
       const zoneX = padL + chartWidth * 0.72;
       const zoneW = chartWidth * 0.28;
       ctx.fillStyle = "rgba(168, 70, 47, 0.08)";
@@ -696,22 +720,25 @@ class TechnicalChartEngine {
     // ---- risk level ----
     if (opts.riskLevel != null && !isRS) {
       const riskY = getY(opts.riskLevel);
-      ctx.fillStyle = "rgba(168, 70, 47, 0.05)";
-      ctx.fillRect(padL, riskY, chartWidth, Math.max(0, mainBottom - riskY));
-      ctx.strokeStyle = "#a8462f";
-      ctx.lineWidth = 1.4;
-      ctx.setLineDash([5, 4]);
-      ctx.beginPath();
-      ctx.moveTo(padL, riskY);
-      ctx.lineTo(w - padR, riskY);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = "#a8462f";
-      ctx.font = "bold 10px \"IBM Plex Mono\", monospace";
-      ctx.fillText("RISK", w - padR + 8, riskY - 4);
+      if (riskY >= mainTop - 2 && riskY <= mainBottom + 2) {
+        ctx.fillStyle = "rgba(168, 70, 47, 0.05)";
+        ctx.fillRect(padL, riskY, chartWidth, Math.max(0, mainBottom - riskY));
+        ctx.strokeStyle = "#a8462f";
+        ctx.lineWidth = 1.4;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo(padL, riskY);
+        ctx.lineTo(w - padR, riskY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = "#a8462f";
+        ctx.font = "600 10px \"IBM Plex Mono\", monospace";
+        ctx.textAlign = "left";
+        ctx.fillText("Risk", padL + 6, riskY - 4);
+      }
     }
 
-    // ---- Fibonacci levels ----
+    // ---- Fibonacci levels (in-scale lines; off-scale rails at the pane edge) ----
     if (opts.showFib && opts.fibLevels && !isRS) {
       for (let k = 0; k < opts.fibLevels.length; k++) {
         const fib = opts.fibLevels[k];
@@ -732,6 +759,32 @@ class TechnicalChartEngine {
         const short = (fib.label || "").split("(")[0].trim();
         ctx.fillText(short, padL + 6, fibY - 4);
       }
+      const rail = (list, atTop) => {
+        if (!list.length) return;
+        list.sort((a, b) => atTop ? b.price - a.price : a.price - b.price);
+        let y = atTop ? mainTop + 13 : mainBottom - 6;
+        ctx.font = "600 10px \"IBM Plex Mono\", monospace";
+        ctx.textAlign = "left";
+        for (let i = 0; i < list.length; i++) {
+          const fib = list[i];
+          const short = (fib.label || "").split("(")[0].trim();
+          const text = `${atTop ? "↑" : "↓"}  ${short}  ${this.fmt(fib.price)}`;
+          ctx.fillStyle = fib.color || "#4a7c59";
+          ctx.fillText(text, padL + 6, y);
+          y += atTop ? 14 : -14;
+        }
+        ctx.strokeStyle = list[0].color || "#4a7c59";
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        const edgeY = atTop ? mainTop + 1 : mainBottom - 1;
+        ctx.moveTo(padL, edgeY);
+        ctx.lineTo(w - padR, edgeY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      };
+      rail(offHigh, true);
+      rail(offLow, false);
     }
 
     // ---- series + indicators (clipped during draw-on animation) ----
@@ -763,20 +816,21 @@ class TechnicalChartEngine {
     }
 
     if (opts.chartType === "candle") {
-      const candleW = Math.max(1.6, (chartWidth / visN) * 0.62);
+      const candleW = Math.max(2.4, (chartWidth / visN) * 0.74);
+      const wickW = visN > 140 ? 1 : 1.25;
       for (let i = i0; i < i1; i++) {
         const d = this.data[i];
         const x = getX(i - i0);
         const up = d.close >= d.open;
         const color = up ? "#4a7c59" : "#a8462f";
         ctx.strokeStyle = color;
-        ctx.lineWidth = 1;
+        ctx.lineWidth = wickW;
         ctx.beginPath();
         ctx.moveTo(x, getY(d.high));
         ctx.lineTo(x, getY(d.low));
         ctx.stroke();
         const top = Math.min(getY(d.open), getY(d.close));
-        const body = Math.max(1.2, Math.abs(getY(d.close) - getY(d.open)));
+        const body = Math.max(2, Math.abs(getY(d.close) - getY(d.open)));
         ctx.fillStyle = color;
         ctx.fillRect(x - candleW / 2, top, candleW, body);
       }
@@ -823,44 +877,6 @@ class TechnicalChartEngine {
       ctx.font = "bold 9px \"IBM Plex Mono\", monospace";
       ctx.textAlign = "left";
       ctx.fillText("VOL", padL + 4, volTop + 10);
-    }
-
-    // ---- RSI pane ----
-    if (showRSI) {
-      const rsiBottom = rsiTop + rsiH - 4;
-      const rsiInner = rsiBottom - rsiTop - 8;
-      ctx.strokeStyle = "#d9d2bd";
-      ctx.beginPath();
-      ctx.moveTo(padL, rsiTop);
-      ctx.lineTo(w - padR, rsiTop);
-      ctx.stroke();
-      ctx.fillStyle = "#7d5a78";
-      ctx.font = "bold 10px \"IBM Plex Mono\", monospace";
-      ctx.textAlign = "left";
-      ctx.fillText("RSI 14", padL + 4, rsiTop + 12);
-      const yAt = (v) => rsiBottom - (v / 100) * rsiInner;
-      ctx.fillStyle = "rgba(125, 90, 120, 0.08)";
-      ctx.fillRect(padL, yAt(80), chartWidth, yAt(40) - yAt(80));
-      ctx.strokeStyle = "#ddd5c0";
-      ctx.setLineDash([2, 3]);
-      ctx.beginPath();
-      ctx.moveTo(padL, yAt(70)); ctx.lineTo(w - padR, yAt(70));
-      ctx.moveTo(padL, yAt(30)); ctx.lineTo(w - padR, yAt(30));
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = "#5b6472";
-      ctx.font = "9px \"IBM Plex Mono\", monospace";
-      ctx.fillText("70", w - padR + 8, yAt(70) + 3);
-      ctx.fillText("30", w - padR + 8, yAt(30) + 3);
-      ctx.strokeStyle = "#7d5a78";
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      for (let i = i0; i < i1; i++) {
-        const y = yAt(this.data[i].rsi != null ? this.data[i].rsi : 50);
-        if (i === i0) ctx.moveTo(getX(i - i0), y);
-        else ctx.lineTo(getX(i - i0), y);
-      }
-      ctx.stroke();
     }
     ctx.restore(); // end animation clip
 
@@ -1114,7 +1130,6 @@ class TechnicalChartEngine {
       <div class="tt-row ${chg >= 0 ? "up" : "dn"}">${chg >= 0 ? "+" : ""}${chg.toFixed(2)}  ${chgPct.toFixed(2)}%</div>
       ${d.sma50 != null ? `<div class="tt-row sma50">50 SMA  ${this.fmt(d.sma50)}</div>` : ""}
       ${d.sma200 != null ? `<div class="tt-row sma200">200 SMA  ${this.fmt(d.sma200)}</div>` : ""}
-      ${d.rsi != null ? `<div class="tt-row rsi">RSI  ${d.rsi.toFixed(1)}</div>` : ""}
       <div class="tt-row">Vol  ${vol}</div>
       ${above != null ? `<div class="tt-flag ${above ? "ok" : "bad"}">${above ? "ABOVE LINE IN THE SAND" : "BELOW RISK — NO TRADE"}</div>` : ""}
     `;

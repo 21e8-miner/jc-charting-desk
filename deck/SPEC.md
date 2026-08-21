@@ -24,7 +24,7 @@ Vanilla JS presentation deck. SAME 5-file structure: `index.html`, `styles.css`,
 - **Measure tool**: drag a range → overlay showing Δ$, Δ%, # bars.
 - **Zoom to selection**: drag on time axis region or Shift+drag to zoom into range; existing wheel zoom / drag pan / dblclick reset stay.
 - **Export PNG** button: renders canvas (with watermark title) to a downloadable PNG.
-- Keep existing candle/line/RS toggle, SMA/Fib/RSI/Volume/RR toggles.
+- Keep existing candle/line/RS toggle, SMA/Fib/Volume/RR toggles. RSI is not a desk indicator.
 
 ### C. Deck UX
 - **Command palette (Ctrl/Cmd+K)**: fuzzy jump to slides, switch symbols, toggle indicators, autoplay on/off, help.
